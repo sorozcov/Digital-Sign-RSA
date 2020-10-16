@@ -33,6 +33,7 @@ privateKeyBob=bobKeys.d
 #c=m^{e}mod {n}}
 #Decipher RSA
 #m=c^{d}mod {n}}
+
 print("Alice public key is: ", hex(publicKeyAlice))
 print("Alice private key is: ", hex(privateKeyAlice))
 print("Both keys will need the value of n: ", hex(nAlice))
@@ -41,12 +42,15 @@ print("Bob public key is: ", hex(publicKeyBob))
 print("Bob private key is: ", hex(privateKeyBob))
 print("Both keys will need the value of n: ", hex(nBob))
 
+#Alice Part
 #We generate a hash from our message and make a digest
 hash = int.from_bytes(sha512(message).digest(), byteorder='big')
 #After that we sign it using our privateKeyAlice
 signature = pow(hash, privateKeyAlice,nAlice)
 print("Signature of message:", hex(signature))
 
+#If signature was altered
+# signature=signature+1
 
 #Now we encrypt our message and send it to Bob using Bobs public key
 intMessage = int.from_bytes(message, byteorder='big')
@@ -54,7 +58,7 @@ encryptedMessage = pow(intMessage, publicKeyBob,nBob)
 print("Message in Int: ",intMessage)
 print("Encrypted message:", hex(encryptedMessage))
 
-
+#Bobs Part
 #Now we decrypt our message that was send from Alice using Public Key of Bob. Now Bob uses his privateKey
 intDecryptedMessage = pow(encryptedMessage, privateKeyBob,nBob)
 # If message was altered
